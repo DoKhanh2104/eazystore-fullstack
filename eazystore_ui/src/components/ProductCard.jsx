@@ -1,8 +1,13 @@
+import { Link } from "react-router-dom";
 import Price from "./Price";
 
 export default function ProductCard({ product }) {
   return (
-    <div className="w-80 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:border-light transition">
+    <Link
+      to={`/product/${product.productId}`}
+      state={{ product }}
+      className="w-80 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:border-light transition"
+    >
       <div className="relative w-full h-72 border-b border-gray-300 dark:border-gray-600">
         <img
           src={product.imageUrl}
@@ -23,6 +28,6 @@ export default function ProductCard({ product }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

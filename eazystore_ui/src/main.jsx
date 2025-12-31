@@ -15,6 +15,7 @@ import Contact, { contactAction } from "./components/Contact";
 import Login from "./components/Login";
 import Home, { productsLoader } from "./components/Home";
 import { Bounce, ToastContainer } from "react-toastify";
+import ProductDetail from "./components/ProductDetail";
 
 const routeDefinitions = createRoutesFromElements(
   <Route path="/" element={<App />} errorElement={<ErrorPage />}>
@@ -24,6 +25,7 @@ const routeDefinitions = createRoutesFromElements(
     <Route path="/contact" element={<Contact />} action={contactAction} />
     <Route path="/login" element={<Login />} />
     <Route path="/cart" element={<Cart />} />
+    <Route path="/product/:productId" element={<ProductDetail />} />
   </Route>
 );
 
