@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useCart } from "@/store/cart-context";
 
 export default function Header() {
   const navLinkClass =
@@ -15,6 +16,8 @@ export default function Header() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("theme") === "dark" ? "dark" : "light";
   });
+
+  const { totalQuantity } = useCart();
 
   useEffect(() => {
     if (theme === "dark") {
@@ -107,8 +110,17 @@ export default function Header() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/cart" className="text-primary dark:text-light py-2">
-                <FontAwesomeIcon icon={faShoppingBasket} />
+              <NavLink
+                to="/cart"
+                className="relative text-primary dark:text-light py-2"
+              >
+                <FontAwesomeIcon
+                  className="text-primary dark:text-light w-6"
+                  icon={faShoppingBasket}
+                />
+                <div className="absolute -right-6 -top-2 bg-yellow-500 text-black font-semibold rounded-full px-2 py-1 leading-none">
+                  {totalQuantity}
+                </div>
               </NavLink>
             </li>
           </ul>
