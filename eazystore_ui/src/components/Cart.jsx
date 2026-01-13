@@ -44,9 +44,12 @@ const Cart = () => {
               </Link>
 
               {/* Checkout button */}
-              <button className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-sm font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition hover:cursor-pointer">
+              <Link
+                to="/checkout"
+                className="py-2 px-4 bg-primary dark:bg-light text-white dark:text-black text-sm font-semibold rounded-sm flex justify-center items-center hover:bg-dark dark:hover:bg-lighter transition hover:cursor-pointer"
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
             </div>
           </div>
         )}

@@ -9,16 +9,21 @@ import PageTitle from "./PageTitle";
 import apiClient from "@/api/apiClient";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "@/store/auth-context";
 
 const Login = () => {
   const actionData = useActionData();
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+  const { loginSuccess } = useAuth();
+  const from = sessionStorage.getItem("redirectPath") || "/home";
 
   useEffect(() => {
     if (actionData?.success) {
-      navigate("/home");
+      loginSuccess(actionData.jwtToken, actionData.user);
+      sessionStorage.removeItem("redirectPath");
+      navigate(from);
     } else if (actionData?.errors) {
       toast.error(actionData.errors.message || "Login failed");
     }
