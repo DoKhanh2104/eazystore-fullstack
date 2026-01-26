@@ -12,4 +12,5 @@ public interface IContactService {
     List<ContactResponseDto> getOpenAllMessages();
 
     Contact updateContactStatus(Long contactId, String contactStatus);
+
 }

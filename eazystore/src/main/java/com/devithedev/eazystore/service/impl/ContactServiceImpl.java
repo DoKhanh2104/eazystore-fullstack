@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.devithedev.eazystore.constants.ApplicationConstants;
 import com.devithedev.eazystore.dto.ContactDto;
+import com.devithedev.eazystore.dto.ContactInfoDto;
 import com.devithedev.eazystore.dto.ContactResponseDto;
 import com.devithedev.eazystore.entity.Contact;
 import com.devithedev.eazystore.exception.ResourceNotFoundException;

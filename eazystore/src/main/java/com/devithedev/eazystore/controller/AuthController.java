@@ -32,6 +32,7 @@ import com.devithedev.eazystore.dto.UserDto;
 import com.devithedev.eazystore.entity.Customer;
 import com.devithedev.eazystore.entity.Role;
 import com.devithedev.eazystore.repository.CustomerRepository;
+import com.devithedev.eazystore.repository.RoleRepository;
 import com.devithedev.eazystore.util.JwtUtil;
 
 import jakarta.validation.Valid;
@@ -46,6 +47,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final CustomerRepository customerRepository;
+    private final RoleRepository roleRepository;
     private final CompromisedPasswordChecker compromisedPasswordChecker;
 
     @PostMapping("/login")
@@ -98,9 +100,7 @@ public class AuthController {
         Customer customer = new Customer();
         BeanUtils.copyProperties(registerRequestDto, customer);
         customer.setPasswordHash(passwordEncoder.encode(registerRequestDto.getPassword()));
-        Role role = new Role();
-        role.setName("ROLE_USER");
-        customer.setRoles(Set.of(role));
+        roleRepository.findByName("ROLE_USER").ifPresent(role -> customer.setRoles(Set.of(role)));
         this.customerRepository.save(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful");
     }

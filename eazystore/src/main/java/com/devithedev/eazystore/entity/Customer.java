@@ -11,7 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
@@ -53,8 +54,8 @@ public class Customer extends BaseEntity {
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
     private Address address;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "customers_roles", joinColumns = @JoinColumn(name = "customer_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
 
 }

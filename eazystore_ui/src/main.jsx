@@ -11,7 +11,7 @@ import {
 import ErrorPage from "./components/ErrorPage";
 import About from "./components/About";
 import Cart from "./components/Cart";
-import Contact, { contactAction } from "./components/Contact";
+import Contact, { contactAction, contactLoader } from "./components/Contact";
 import Login, { loginAction } from "./components/Login";
 import Home, { productsLoader } from "./components/Home";
 import ProductDetail from "./components/ProductDetail";
@@ -38,7 +38,12 @@ const routeDefinitions = createRoutesFromElements(
     <Route index element={<Home />} loader={productsLoader} />
     <Route path="/home" element={<Home />} loader={productsLoader} />
     <Route path="/about" element={<About />} />
-    <Route path="/contact" element={<Contact />} action={contactAction} />
+    <Route
+      path="/contact"
+      element={<Contact />}
+      action={contactAction}
+      loader={contactLoader}
+    />
     <Route path="/login" element={<Login />} action={loginAction} />
     <Route path="/cart" element={<Cart />} />
     <Route path="/register" element={<Register />} action={registerAction} />

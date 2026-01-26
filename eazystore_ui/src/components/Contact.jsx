@@ -1,6 +1,7 @@
 import {
   Form,
   useActionData,
+  useLoaderData,
   useNavigation,
   useSubmit,
 } from "react-router-dom";
@@ -10,6 +11,7 @@ import { toast } from "sonner";
 import apiClient from "../api/apiClient";
 
 const Contact = () => {
+  const contactInfo = useLoaderData();
   const actionData = useActionData();
   const formRef = useRef(null);
   const navigation = useNavigation();
@@ -50,113 +52,132 @@ const Contact = () => {
         We had love to hear from you! If you have any questions, feedback, or
         suggestions, please do not hesitate to reach out.
       </p>
-
-      {/* Contact form */}
-      <Form
-        method="POST"
-        ref={formRef}
-        onSubmit={handleSubmit}
-        className="max-w-[768px] mx-auto space-y-6"
-      >
-        {/* Name */}
-        <div>
-          <label htmlFor="name" className={labelStyle}>
-            Name
-          </label>
-          <input
-            className={textFieldStyle}
-            id="name"
-            name="name"
-            required
-            minLength={5}
-            placeholder="Your Name"
-            maxLength={32}
-            type="text"
-          />
-          {actionData?.errors?.name && (
-            <p className="text-red-500 mt-1 text-sm">
-              {actionData.errors.name}
-            </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-w-[952px] mx-auto mt-8">
+        {/* Contact Detail */}
+        <div className="text-primary dark:text-light  p-6">
+          <h2 className="text-2xl font-semibold mb-4">Contact Info</h2>
+          {contactInfo && (
+            <>
+              <p className="mb-4">
+                <strong>Phone:</strong> {contactInfo.phone}
+              </p>
+              <p className="mb-4">
+                <strong>Email:</strong> {contactInfo.email}
+              </p>
+              <p className="mb-4">
+                <strong>Address:</strong> {contactInfo.address}
+              </p>
+            </>
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Email */}
+        {/* Contact form */}
+        <Form
+          method="POST"
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="max-w-[768px] mx-auto space-y-6"
+        >
+          {/* Name */}
           <div>
-            <label htmlFor="email" className={labelStyle}>
-              Email
+            <label htmlFor="name" className={labelStyle}>
+              Name
             </label>
             <input
               className={textFieldStyle}
-              id="email"
-              name="email"
+              id="name"
+              name="name"
               required
-              placeholder="Your Email"
-              type="email"
+              minLength={5}
+              placeholder="Your Name"
+              maxLength={32}
+              type="text"
             />
-            {actionData?.errors?.email && (
+            {actionData?.errors?.name && (
               <p className="text-red-500 mt-1 text-sm">
-                {actionData.errors.email}
+                {actionData.errors.name}
               </p>
             )}
           </div>
 
-          {/* Mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className={labelStyle}>
+                Email
+              </label>
+              <input
+                className={textFieldStyle}
+                id="email"
+                name="email"
+                required
+                placeholder="Your Email"
+                type="email"
+              />
+              {actionData?.errors?.email && (
+                <p className="text-red-500 mt-1 text-sm">
+                  {actionData.errors.email}
+                </p>
+              )}
+            </div>
+
+            {/* Mobile */}
+            <div>
+              <label htmlFor="mobileNumber" className={labelStyle}>
+                Mobile Number
+              </label>
+              <input
+                className={textFieldStyle}
+                id="mobileNumber"
+                name="mobileNumber"
+                required
+                placeholder="Your Number"
+                pattern="^\d{10}$"
+                title="Mobile number must be exactly 10 digits"
+                type="tel"
+              />
+              {actionData?.errors?.mobileNumber && (
+                <p className="text-red-500 mt-1 text-sm">
+                  {actionData.errors.mobileNumber}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Message */}
           <div>
-            <label htmlFor="mobileNumber" className={labelStyle}>
-              Mobile Number
+            <label htmlFor="message" className={labelStyle}>
+              Message
             </label>
-            <input
+            <textarea
               className={textFieldStyle}
-              id="mobileNumber"
-              name="mobileNumber"
+              id="message"
+              name="message"
               required
-              placeholder="Your Number"
-              pattern="^\d{10}$"
-              title="Mobile number must be exactly 10 digits"
-              type="tel"
+              minLength={5}
+              rows={4}
+              placeholder="Your Message"
+              maxLength={100}
             />
-            {actionData?.errors?.mobileNumber && (
+            {actionData?.errors?.message && (
               <p className="text-red-500 mt-1 text-sm">
-                {actionData.errors.mobileNumber}
+                {actionData.errors.message}
               </p>
             )}
           </div>
-        </div>
 
-        {/* Message */}
-        <div>
-          <label htmlFor="message" className={labelStyle}>
-            Message
-          </label>
-          <textarea
-            className={textFieldStyle}
-            id="message"
-            name="message"
-            required
-            minLength={5}
-            rows={4}
-            placeholder="Your Message"
-            maxLength={100}
-          />
-          {actionData?.errors?.message && (
-            <p className="text-red-500 mt-1 text-sm">
-              {actionData.errors.message}
-            </p>
-          )}
-        </div>
-
-        {/* Submit button */}
-        <div className="flex justify-center items-center mt-8">
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter hover:cursor-pointer"
-          >
-            {isSubmitting ? "Submitting" : "Submit"}
-          </button>
-        </div>
-      </Form>
+          {/* Submit button */}
+          <div className="flex justify-center items-center mt-8">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="px-6 py-2 text-white dark:text-black text-xl rounded-md transition duration-200 bg-primary dark:bg-light hover:bg-dark dark:hover:bg-lighter hover:cursor-pointer"
+            >
+              {isSubmitting ? "Submitting" : "Submit"}
+            </button>
+          </div>
+        </Form>
+      </div>
     </div>
   );
 };
@@ -183,6 +204,20 @@ export async function contactAction({ request }) {
       error.response?.data?.errorMessage ||
         error.message ||
         "Failed to submit contact. Please try again",
+      { status: error.status || 500 },
+    );
+  }
+}
+
+export async function contactLoader() {
+  try {
+    const res = await apiClient.get("/contacts");
+    return res.data;
+  } catch (error) {
+    throw new Response(
+      error.response?.data?.errorMessage ||
+        error.message ||
+        "Failed to fetch contact detail. Please try again!",
       { status: error.status || 500 },
     );
   }

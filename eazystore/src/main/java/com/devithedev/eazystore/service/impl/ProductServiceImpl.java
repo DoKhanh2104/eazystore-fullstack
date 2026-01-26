@@ -5,11 +5,12 @@ import com.devithedev.eazystore.entity.Product;
 import com.devithedev.eazystore.repository.ProductRepository;
 import com.devithedev.eazystore.service.IProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +18,11 @@ public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
 
+    @Cacheable("products")
     @Override
-    public List<ProductDto> getProducts() {
-        return this.productRepository.findAll().stream().map(this::transformToDTO).collect(Collectors.toList());
+    public Page<ProductDto> getProducts(Pageable pageable) {
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(this::transformToDTO);
     }
 
     private ProductDto transformToDTO(Product product) {
