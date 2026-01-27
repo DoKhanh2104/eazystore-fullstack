@@ -8,20 +8,23 @@ import {
 import PageTitle from "./PageTitle";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useAuth } from "../store/auth-context";
 import apiClient from "../api/apiClient";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/auth-slice";
 
 const Login = () => {
   const actionData = useActionData();
   const navigate = useNavigate();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
-  const { loginSuccess } = useAuth();
+  const dispatch = useDispatch();
   const from = sessionStorage.getItem("redirectPath") || "/home";
 
   useEffect(() => {
     if (actionData?.success) {
-      loginSuccess(actionData.jwtToken, actionData.user);
+      dispatch(
+        loginSuccess({ jwtToken: actionData.jwtToken, user: actionData.user }),
+      );
       sessionStorage.removeItem("redirectPath");
       setTimeout(() => {
         navigate(from);

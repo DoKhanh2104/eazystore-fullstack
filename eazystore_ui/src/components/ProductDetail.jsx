@@ -6,7 +6,8 @@ import {
   faShoppingBasket,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
-import { useCart } from "../store/cart-context";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cart-slice";
 
 const ProductDetail = () => {
   const location = useLocation();
@@ -16,13 +17,13 @@ const ProductDetail = () => {
   const zoomRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [backgroundPosition, setBackgroundPosition] = useState("center");
-  const { addToCart } = useCart();
+  const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     if (quantity < 1) {
       return;
     }
-    addToCart(product, quantity);
+    dispatch(addToCart(product, quantity));
   };
 
   const handleMouseMove = (e) => {

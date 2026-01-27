@@ -15,8 +15,7 @@ import Contact, { contactAction, contactLoader } from "./components/Contact";
 import Login, { loginAction } from "./components/Login";
 import Home, { productsLoader } from "./components/Home";
 import ProductDetail from "./components/ProductDetail";
-import { CartProvider } from "./store/cart-context";
-import { AuthProvider } from "./store/auth-context";
+
 import CheckoutForm from "./components/CheckoutForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile, { profileAction, profileLoader } from "./components/Profile";
@@ -28,6 +27,8 @@ import { Toaster } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import OrderSuccess from "./components/OrderSuccess";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 const stripePrimse = loadStripe(
   "pk_test_51SrZQRGsvnUtzMHm1FhLTOrqGqlSEhDsvqHEjbyqkZH77wpIZSOSsCsZFo9BpxYTeDcZuspi0g9k9KKPIFxOGCSO00xYesAqX1",
@@ -82,11 +83,11 @@ const appRouter = createBrowserRouter(routeDefinitions);
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Elements stripe={stripePrimse}>
-      <AuthProvider>
-        <CartProvider>
-          <RouterProvider router={appRouter} />
-        </CartProvider>
-      </AuthProvider>
+      {/* <AuthProvider> */}
+      <Provider store={store}>
+        <RouterProvider router={appRouter} />
+      </Provider>
+      {/* </AuthProvider> */}
       <Toaster position="bottom-right" richColors />
     </Elements>
   </StrictMode>,

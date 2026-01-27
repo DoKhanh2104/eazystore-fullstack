@@ -3,12 +3,15 @@ import PageTitle from "./PageTitle";
 import emptyCartImage from "../assets/util/emptycart.png";
 import { useMemo } from "react";
 import CartTable from "./CartTable";
-import { useCart } from "../store/cart-context";
-import { useAuth } from "../store/auth-context";
+
+import { useSelector } from "react-redux";
+import { selectCartItems } from "../store/cart-slice";
+import { selectIsAuthenticated, selectUser } from "../store/auth-slice";
 
 const Cart = () => {
-  const { cart } = useCart();
-  const { isAuthenticated, user } = useAuth();
+  const cart = useSelector(selectCartItems);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
 
   const isAddressIncomplete = useMemo(() => {
     if (!isAuthenticated) return false;

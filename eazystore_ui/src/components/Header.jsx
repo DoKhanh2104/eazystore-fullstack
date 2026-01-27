@@ -9,15 +9,19 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useAuth } from "../store/auth-context";
-import { useCart } from "../store/cart-context";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTotalQuantity } from "../store/cart-slice";
+import { logout, selectIsAuthenticated, selectUser } from "../store/auth-slice";
 
 export default function Header() {
   const navLinkClass =
     "text-center text-base font-primary font-semibold text-primary py-2 dark:text-light hover:text-dark dark:hover:text-lighter";
   const dropdownLinkClass =
     "block w-full text-left px-4 py-2 text-base font-primary font-semibold text-primary dark:text-light hover:bg-gray-100 dark:hover:bg-gray-600";
-  const { isAuthenticated, logout, user } = useAuth();
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const menuRef = useRef();
@@ -37,7 +41,7 @@ export default function Header() {
     return localStorage.getItem("theme") === "dark" ? "dark" : "light";
   });
 
-  const { totalQuantity } = useCart();
+  const totalQuantity = useSelector(selectTotalQuantity);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -67,7 +71,7 @@ export default function Header() {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    logout();
+    dispatch(logout());
     toast.success("Logged out successfully!");
     navigate("/home");
   };

@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../store/auth-context";
 import apiClient from "../api/apiClient";
-import { useCart } from "../store/cart-context";
 import {
   useStripe,
   useElements,
@@ -12,10 +10,19 @@ import {
 import { useNavigate } from "react-router-dom";
 import PageTitle from "./PageTitle";
 import { toast } from "sonner";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearCart,
+  selectCartItems,
+  selectTotalPrice,
+} from "../store/cart-slice";
+import { selectUser } from "../store/auth-slice";
 
 export default function CheckoutForm() {
-  const { user } = useAuth();
-  const { cart, totalPrice, clearCart } = useCart();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectCartItems);
+  const totalPrice = useSelector(selectTotalPrice);
+  const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -124,7 +131,7 @@ export default function CheckoutForm() {
             })),
           });
           sessionStorage.setItem("skipRedirectPath", "true");
-          clearCart();
+          dispatch(clearCart());
         } catch (orderError) {
           console.error("Failed to create order:", orderError);
           setErrorMessage("Order creation failed. Please contact support.");

@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Price from "./Price";
-import { useCart } from "../store/cart-context";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../store/cart-slice";
 
 export default function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const dispatch = useDispatch();
 
   return (
     <div className="w-80 rounded-md mx-auto border border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex flex-col bg-white dark:bg-gray-800 hover:border-primary dark:border-light transition">
@@ -30,7 +31,7 @@ export default function ProductCard({ product }) {
             <Price currency="$" price={product.price} />
           </div>
           <button
-            onClick={() => addToCart(product, 1)}
+            onClick={() => dispatch(addToCart({ product, quantity: 1 }))}
             className="bg-primary text-white dark:bg-light dark:text-primary text-sm py-2 px-4 rounded-br-md hover:cursor-pointer"
           >
             Add to cart

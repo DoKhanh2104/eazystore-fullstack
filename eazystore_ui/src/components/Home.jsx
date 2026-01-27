@@ -71,7 +71,7 @@ export default function Home() {
 export async function productsLoader({ request }) {
   const url = new URL(request.url);
   const page = url.searchParams.get("page") || 0;
-  const size = 6;
+  const size = 9;
 
   try {
     const response = await apiClient.get(`/products?page=${page}&size=${size}`);
